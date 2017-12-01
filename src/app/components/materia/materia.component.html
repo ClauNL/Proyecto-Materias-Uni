@@ -1,0 +1,36 @@
+<!-- Detalles de la materia -->
+<div *ngIf="materia">
+
+  <h2>{{ materia.nombre | uppercase }}</h2>
+  <p> Nombre:{{materia.nombre}}</p>
+  <p>Carrera: {{materia.carrera}} </p>
+  <p>Profesor: {{materia.profesor}} </p>
+  <p>Puntos: {{materia.ratingPromedio}} </p>
+  <p>Comentarios:</p>
+
+</div>
+
+
+<li *ngFor="let comentario of comentarios">
+  <div class="card text-white bg-secondary">
+    <div class="card-body">
+      <blockquote class="card-blockquote">
+        <p>Rating: {{comentario.rating}} </p>
+        <p>Usuario dijo: {{comentario.texto}} </p>
+      </blockquote>
+    </div>
+  </div>
+</li>
+
+
+
+<!--
+    <ul  class="list-group">
+    <li *ngFor="let materia of materias"  class="list-group-item">
+      <a routerLink="/materia/{{materia.$key}}">{{materia.nombre}}</a>
+    </li>
+</ul>
+  
+-->
+
+<button (click)="goBack()">go back</button>

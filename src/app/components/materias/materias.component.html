@@ -1,0 +1,7 @@
+<h2>Materias</h2>
+
+<ul  class="list-group">
+    <li *ngFor="let materia of materias"  class="list-group-item">
+      <a routerLink="/materia/{{materia.$key}}">{{materia.nombre}}</a>
+    </li>
+</ul>

@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">PilarOverflow</a>
+  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse" id="navbarColor01" style="">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a routerLink="/user-profile" class="nav-link"> Perfil <span class="sr-only">(current)</span></a>
+      </li>
+        <li>
+        <a routerLink="materias" class="nav-link">Materias</a>
+      </li>
+    </ul>
+<!--
+    <ul class="navbar-nav mr-right">
+      <li *ngIf="(auth.afAuth.authState | async)"class="nav-item">
+        <a class="nav-link" (click)="auth.logout()"> Logout </a>
+      </li>
+      <li *ngIf="!(auth.afAuth.authState | async)"class="nav-item">
+          <a class="nav-link" (click)="auth.login()"> Login </a>
+      </li>
+    </ul>
+-->
+  </div>
+</nav>
