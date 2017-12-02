@@ -24,14 +24,18 @@ export class ComentarioComponent implements OnInit {
 }
 
 export class Comentario {
+  $key: string;
   rating: number;
   texto: string;
   userId: string;
+  userName: string;
+  
+  
 }
 
 
 
 
 
-}
+
 

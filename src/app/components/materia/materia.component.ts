@@ -35,24 +35,10 @@ export class MateriaComponent implements OnInit {
   }
 
   getComentarios(): void {
-    let ids = this.materia.comentarios;
-    console.log(ids);
-    var index = 0;
-
-    for (let id of ids) {
-      console.log(id);
-      if(id!=null){
-        this.db.getComentario(id).subscribe(comentario => {
-        this.comentarios[index] = comentario;
-        index++;
-        console.log(comentario);
-      })
-      }
-      
-    }
-
-
-
+     this.db.getComentarios(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
+       this.comentarios = comentarios;
+       console.log(comentarios);
+     })
   }
 
 
@@ -74,4 +60,5 @@ export class Materia {
   profesor: string;
   raitingPromedio: number;
   comentarios: string[];
+  raitings: number[];
 }
