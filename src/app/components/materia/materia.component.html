@@ -1,36 +1,44 @@
 <!-- Detalles de la materia -->
 <div *ngIf="materia">
+  <h2>{{materia.nombre | uppercase}} </h2>
+  <table class="table table-striped table-hover table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Carrera</th>
+        <th>Profesor</th>
+        <th>Puntos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{materia.carrera}}</td>
+        <td>{{materia.profesor}}</td>
+        <td>{{materia.ratingPromedio}}/5</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-  <h2>{{ materia.nombre | uppercase }}</h2>
-  <p> Nombre:{{materia.nombre}}</p>
-  <p>Carrera: {{materia.carrera}} </p>
-  <p>Profesor: {{materia.profesor}} </p>
-  <p>Puntos: {{materia.ratingPromedio}} </p>
-  <p>Comentarios:</p>
+<button (click)="agregar()" type="button" class="btn btn-info btn-sm">Añadir</button>
 
+
+<div *ngIf= "nuevoComentario">
+  <app-comentario-form></app-comentario-form>
 </div>
 
 
+<!--  Mostrar comentarios-->
 <li *ngFor="let comentario of comentarios">
-  <div class="card text-white bg-secondary">
-    <div class="card-body">
-      <blockquote class="card-blockquote">
-        <p>Rating: {{comentario.rating}} </p>
-        <p>Usuario dijo: {{comentario.texto}} </p>
-      </blockquote>
-    </div>
-  </div>
+    <div class="card text-white bg-secondary mb-2" >
+        <div class="card-header">Rating: {{comentario.rating}}/5</div>
+        <div class="card-body">
+          <h5 class="card-title">{{comentario.userName}}:</h5>
+          <p class="card-text">{{comentario.texto}}</p>
+        </div>
+      </div>
 </li>
 
 
 
-<!--
-    <ul  class="list-group">
-    <li *ngFor="let materia of materias"  class="list-group-item">
-      <a routerLink="/materia/{{materia.$key}}">{{materia.nombre}}</a>
-    </li>
-</ul>
-  
--->
-
-<button (click)="goBack()">go back</button>
+<button (click)="goBack()" type="button" class="btn btn-info btn-sm">go back</button>
+<button (click)="prueba()">prueba</button>

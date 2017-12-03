@@ -10,6 +10,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MateriasComponent } from './components/materias/materias.component';
 import { MateriaComponent } from './components/materia/materia.component';
+import { ComentarioComponent, Comentario } from './components/comentario/comentario.component';
+import { ComentarioFormComponent } from './components/comentario-form/comentario-form.component';
 
 
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
@@ -18,7 +20,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthService } from "./services/auth.service";
 import { FirebaseService } from "./services/firebase.service";
-import { ComentarioComponent } from './components/comentario/comentario.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/user-profile', pathMatch: 'full' },
@@ -37,7 +38,8 @@ const appRoutes: Routes = [
     NavbarComponent,
     MateriasComponent,
     MateriaComponent,
-    ComentarioComponent
+    ComentarioComponent,
+    ComentarioFormComponent
   ],
   imports: [
     BrowserModule,

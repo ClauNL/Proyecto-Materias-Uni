@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FirebaseService } from "../../services/firebase.service";
+import { AuthService } from "../../services/auth.service";
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { Comentario } from "../comentario/comentario.component";
+import { ComentarioComponent, Comentario } from "../comentario/comentario.component";
+import { ComentarioFormComponent } from "../comentario-form/comentario-form.component";
 
 @Component({
   selector: 'app-materia',
@@ -13,10 +15,12 @@ import { Comentario } from "../comentario/comentario.component";
 export class MateriaComponent implements OnInit {
 
   @Input() materia: Materia;
+  nuevoComentario = false;
   comentarios: Comentario[] = new Array<Comentario>();
 
 
-  constructor(private db: FirebaseService,
+  constructor(private db: FirebaseService, 
+    private afAuth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location) { }
@@ -35,17 +39,37 @@ export class MateriaComponent implements OnInit {
   }
 
   getComentarios(): void {
-     this.db.getComentarios(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
+     this.db.getComentariosPorMateria(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
        this.comentarios = comentarios;
        console.log(comentarios);
      })
   }
+/*
+  calcularPromedio(): number {
+    console.log(this.db.calcularPromedio(this.route.snapshot.paramMap.get('id')));
+    return this.db.calcularPromedio(this.route.snapshot.paramMap.get('id'));
+  }
+  
+  prueba(): void {
+    this.calcularPromedio();
+  }
+  */
 
+  agregar(): void {
+    this.nuevoComentario = true;
+  }
 
+  comentar(rating, texto): void {
+    this.db.comentar(rating, texto, this.route.snapshot.paramMap.get('id'));
+  }
 
   goBack(): void {
     this.location.back();
   }
+
+  
+
+  
 
 
 
@@ -58,7 +82,7 @@ export class Materia {
   foto: string;
   nombre: string;
   profesor: string;
-  raitingPromedio: number;
+  ratingPromedio: number;
   comentarios: string[];
-  raitings: number[];
+  ratings: number[];
 }

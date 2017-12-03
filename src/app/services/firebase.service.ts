@@ -8,18 +8,26 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Materia } from "../components/materia/materia.component";
 import { Comentario } from "../components/comentario/comentario.component";
 import { Observable } from 'rxjs/Rx';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import * as firebase from 'firebase';
 
 
 @Injectable()
 export class FirebaseService {
 
   userId: string;
-  comentarios: Comentario[];
+  userName: string;
 
-  constructor(private db: AngularFireDatabase, private afAuth: AngularFireAuth) {
+  constructor(
+    private db: AngularFireDatabase, 
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private route: ActivatedRoute) {
 
     this.afAuth.authState.subscribe(user => {
       if (user) this.userId = user.uid;
+      if (user) this.userName = user.displayName;
       console.log(this.userId)
     })
   }
@@ -35,36 +43,133 @@ export class FirebaseService {
     return this.db.object(`/materias/` + id);
   }
 
-  getComentario(id: string): Observable<Comentario> {
-    if (!this.userId) return;
-    return this.db.object(`/comentarios/` + id);
+  comentar(rating, texto, materiaId): void {
+    var comentarioData = {
+      rating: rating,
+      texto: texto,
+      userId: this.userId,
+      userName: this.userName
+    };
+
+    var newKey = firebase.database().ref().child('comentarios').push().key;
+    var newKey2 = firebase.database().ref().child('/materias/' + materiaId + '/comentarios').push().key;
+    var newKey3 = firebase.database().ref().child('/materias/' + materiaId + '/ratings').push().key;
+
+    var updates = {};
+    updates['/comentarios/' + newKey] = comentarioData;
+    updates['/materias/' + materiaId + '/comentarios/' + newKey2] = newKey;
+    updates['/materias/' + materiaId + '/ratings/' + newKey3] = comentarioData.rating;
+
+    firebase.database().ref().update(updates);
+
   }
 
 
-  getComentarios(MateriaID: string): Observable <Comentario[]> {
-    
-    return this.db.list(`/materias/` + MateriaID + `/comentarios`)
-    .map((Keys: Comentario[]) => Keys
-        .map((Key: Comentario) => {
 
-            return this.db.object(`/comentarios/${Key.$key}`)
+  getComentariosPorMateria(MateriaID: string): Observable<Comentario[]> {
+
+    return this.db.list(`/materias/` + MateriaID + `/comentarios`)
+      .map((Keys) => Keys
+        .map((Key) => {
+          return this.db.object(`/comentarios/${Key.$value}`)
         }))
-    .switchMap((comments) => {
+      .switchMap((comments) => {
 
         return Observable.combineLatest(comments);
-    });
-
-/*
-    this.db.list(`/materias/` + MateriaID + `/comentarios`)
-      .subscribe((comments) => {
-        console.log(comments);
-        comments.forEach((comentario) => {
-          console.log(comentario);
-          console.log(this.db.object(`/comentarios/${comentario.$value}`))
-        })
       });
-*/
-
   }
+
+
+  getComentariosPorUsuario(): Observable<Comentario[]> {
+    
+         return this.db.list(`/comentarios`, {
+           query: {
+             orderByChild: 'userId',
+             equalTo: this.userId
+           }
+         })
+  }
+
+  /*
+      this.db.list(`/materias/` + MateriaID + `/comentarios`)
+        .subscribe((comments) => {
+          console.log(comments);
+          comments.forEach((comentario) => {
+            console.log(comentario);
+            console.log(this.db.object(`/comentarios/${comentario.$value}`))
+          })
+        });
+  */
+
+  /*
+    calcularPromedio(MateriaID: string): Observable<number> {
+      
+      var prom;
+      var total: Observable<number>;
+      var cant = 0;
+      
+      this.db.list(`/materias/` + MateriaID + `/raitings`)
+        .subscribe(raitings => {
+          raitings.forEach(raiting => {
+            total = total + raiting.$value;
+            cant = cant+1;
+          })
+        });
+        
+        total = this.db.list(`/materias/` + MateriaID + `/raitings`).count();
+        
+        this.db.list('/materias/' + MateriaID + '/raitings')
+  
+  
+        ref => ref.orderByChild('size').equalTo('large'))
+        .subscribe(raitings => {
+          var total: Number = 0.0
+          raitings.forEach(raiting => {
+            let snap = raiting;
+            let val = snap.value;
+            total += val
+          })
+          snapshot.forEach(function(voteSnapshot) {
+            total += voteSnapshot.val().vote;
+        });
+        });
+  
+  */
+  /*
+        let placesRef = this.db.database.ref.
+        child("akapnapp")
+        
+        placesRef.observeSingleEvent(of: .value, with: { snapshot in
+        
+            for child in snapshot.children {
+        
+                let placeSnap = child as! FIRDataSnapshot
+                let ratingsSnap = placeSnap.childSnapshot(forPath: "rating")
+        
+                let count = ratingsSnap.childrenCount
+                var total: Double = 0.0
+                for child in ratingsSnap.children {
+                    print(child)
+                    let snap = child as! FIRDataSnapshot
+                    let val = snap.value as! Double
+                    total += val
+                }
+                let average = total/Double(count)
+                print(average)
+            }
+        })
+  
+  
+  
+  
+        console.log(total);
+        console.log(cant);
+      
+        return (total);
+  
+    }
+  */
+
+
 
 }

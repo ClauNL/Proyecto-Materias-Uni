@@ -3,6 +3,8 @@ import { FirebaseService } from "../../services/firebase.service";
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+
 
 @Component({
   selector: 'app-comentario',
@@ -24,14 +26,17 @@ export class ComentarioComponent implements OnInit {
 }
 
 export class Comentario {
-  $key: string;
-  rating: number;
-  texto: string;
-  userId: string;
-  userName: string;
-  
-  
+
+  constructor(
+    public $key?: string,
+    public rating?: number,
+    public texto?: string,
+    public userId?: string,
+    public userName?: string,
+  ) {}
 }
+
+
 
 
 

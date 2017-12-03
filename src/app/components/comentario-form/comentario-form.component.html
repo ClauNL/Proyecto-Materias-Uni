@@ -1,0 +1,22 @@
+<div class="container">
+    <h3>Nuevo comentario</h3>
+    <form (ngSubmit)="onSubmit()" #comentarioForm="ngForm">
+      <div class="form-group">
+        <label for="rating">Puntuación: </label>
+        <select class="form-control" id="rating" required
+            [(ngModel)]="model.rating" name="rating">
+          <option *ngFor="let rat of ratings" [value]="rat"> {{rat}} </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="texto">Mensaje:</label>
+        <input type="text" class="form-control" id="texto" required 
+        [(ngModel)]="model.texto" name="texto">
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Submit</button>
+  
+    </form>
+  
+  </div>

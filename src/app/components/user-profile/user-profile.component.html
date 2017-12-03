@@ -3,10 +3,37 @@
   <h3>Hola, {{ auth.currentUserDisplayName }}</h3>
   <img [src]="auth.currentUser.photoURL || 'https://api.adorable.io/avatars/109/fire.png'" width=50px>
   <button (click)="logout()">Logout</button>
+
+<!--  Mostrar comentarios-->
+<li *ngFor="let comentario of comentarios">
+   <!-- <div class="card text-white bg-secondary">
+      <div class="card-body">
+        <blockquote class="card-blockquote">
+          <p>Rating: {{comentario.rating}}/5 </p>
+          <p>{{comentario.userName}}: {{comentario.texto}} </p>
+        </blockquote>
+      </div>
+    </div>
+  </li>
+ -->
+
+<div class="card text-white bg-secondary mb-2">
+    <div class="card-header">Rating: {{comentario.rating}}/5</div>
+    <div class="card-body">
+      <h5 class="card-title">{{comentario.userName}}:</h5>
+      <p class="card-text">{{comentario.texto}}</p>
+    </div>
+  </div>
+
 </div>
+
 <!-- User NOT logged in -->
 <div *ngIf="!auth.currentUser">
   <h3>Ohh, {{ auth.currentUserDisplayName }}</h3>
   <p>debes iniciar sesión...</p>
   <button routerLink="/user-login">Login</button>
 </div>
+
+
+
+
