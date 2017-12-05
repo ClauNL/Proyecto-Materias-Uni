@@ -33,6 +33,7 @@ export class Comentario {
     public texto?: string,
     public userId?: string,
     public userName?: string,
+    public fecha?: string,
   ) {}
 }
 

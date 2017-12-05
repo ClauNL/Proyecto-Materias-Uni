@@ -28,9 +28,10 @@
 
 
 <!--  Mostrar comentarios-->
-<li *ngFor="let comentario of comentarios">
+<li *ngFor="let comentario of comentarios | OrderByPipe">
     <div class="card text-white bg-secondary mb-2" >
-        <div class="card-header">Rating: {{comentario.rating}}/5</div>
+        <div class="card-header">Rating: {{comentario.rating}}/5 ...... {{comentario.fecha | date}}
+        </div>
         <div class="card-body">
           <h5 class="card-title">{{comentario.userName}}:</h5>
           <p class="card-text">{{comentario.texto}}</p>

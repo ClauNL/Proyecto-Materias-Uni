@@ -14,6 +14,7 @@ import { MateriaComponent } from './components/materia/materia.component';
 import { ComentarioComponent, Comentario } from './components/comentario/comentario.component';
 import { ComentarioFormComponent } from './components/comentario-form/comentario-form.component';
 
+import {OrderByPipe} from "./orderByPipe"
 
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
@@ -40,7 +41,8 @@ const appRoutes: Routes = [
     MateriasComponent,
     MateriaComponent,
     ComentarioComponent,
-    ComentarioFormComponent
+    ComentarioFormComponent,
+    OrderByPipe
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     FormsModule
+    
   ],
   providers: [AuthService, FirebaseService],
   bootstrap: [AppComponent]

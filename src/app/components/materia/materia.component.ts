@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ComentarioComponent, Comentario } from "../comentario/comentario.component";
 import { ComentarioFormComponent } from "../comentario-form/comentario-form.component";
+import {OrderByPipe} from "../../orderByPipe"
+
 
 @Component({
   selector: 'app-materia',

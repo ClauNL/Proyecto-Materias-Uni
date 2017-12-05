@@ -10,6 +10,7 @@ import { Comentario } from "../components/comentario/comentario.component";
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import {OrderByPipe} from "../orderByPipe"
 import * as firebase from 'firebase';
 
 
@@ -48,9 +49,10 @@ export class FirebaseService {
       rating: rating,
       texto: texto,
       userId: this.userId,
-      userName: this.userName
+      userName: this.userName,
+      fecha: firebase.database.ServerValue.TIMESTAMP
     };
-
+    
     var newKey = firebase.database().ref().child('comentarios').push().key;
     var newKey2 = firebase.database().ref().child('/materias/' + materiaId + '/comentarios').push().key;
     var newKey3 = firebase.database().ref().child('/materias/' + materiaId + '/ratings').push().key;
@@ -68,7 +70,12 @@ export class FirebaseService {
 
   getComentariosPorMateria(MateriaID: string): Observable<Comentario[]> {
 
-    return this.db.list(`/materias/` + MateriaID + `/comentarios`)
+    return this.db.list(`/materias/` + MateriaID + `/comentarios`, {
+      query: {
+        orderByChild: 'fecha',
+        limitToLast: 20
+      }
+    })
       .map((Keys) => Keys
         .map((Key) => {
           return this.db.object(`/comentarios/${Key.$value}`)
