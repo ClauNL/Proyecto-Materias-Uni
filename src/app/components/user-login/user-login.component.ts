@@ -15,7 +15,7 @@ export class UserLoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  private signIn(): void {
+   signIn(): void {
     this.auth.signIn();
     this.router.navigate(['/user-profile']);
     
