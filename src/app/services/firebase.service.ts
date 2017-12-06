@@ -1,7 +1,3 @@
-//import 'rxjs/add/operator/map'
-//import 'rxjs/add/operator/switchMap';
-//import 'rxjs/add/operator/combineLatest';
-
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -56,8 +52,8 @@ export class FirebaseService {
     var newKey = firebase.database().ref().child('comentarios').push().key; //clave comentario
     var newKey2 = firebase.database().ref().child('/materias/' + materiaId + '/comentarios').push().key; //clave comentario en materia
 
-    this.db.object('/comentarios/'+ newKey).update(comentarioData);  //update comenatrios
-    this.db.object('/materias/' + materiaId + '/comentarios/'+ newKey2 ).set(newKey);  //update comentarios en materia
+    this.db.object('/comentarios/' + newKey).update(comentarioData);  //update comenatrios
+    this.db.object('/materias/' + materiaId + '/comentarios/' + newKey2).set(newKey);  //update comentarios en materia
 
     var materia;
     this.getInfoMateria(materiaId).subscribe(mat => { materia = mat });
@@ -67,7 +63,7 @@ export class FirebaseService {
     referencia.update({ numRatings: materia.ratings.numRatings + 1 });
     referencia.update({ ratingAcumulado: materia.ratings.ratingAcumulado + comentarioData.rating });
 
-    this.db.object('/materias/' + materiaId + '/ratingPromedio' ).set(this.promedio(materiaId));
+    this.db.object('/materias/' + materiaId + '/ratingPromedio').set(this.promedio(materiaId));
 
   }
 
@@ -83,7 +79,7 @@ export class FirebaseService {
         ratingAcumulado = ratingsData.ratingAcumulado;
         promedio = ratingAcumulado / numRatings;
       });
-      return Math.round(promedio * 100) / 100;
+    return Math.round(promedio * 100) / 100;
   }
 
   getComentariosPorMateria(MateriaID: string): Observable<Comentario[]> {
@@ -113,105 +109,5 @@ export class FirebaseService {
       }
     })
   }
-
-  
-
-  /*cartTotals(qty = 0, total = 0) {
-    return this.af.database.list('ShoppingCartItem')
-      .switchMap(items => {
-        return Observable.from(items)
-          .mergeMap(cart => {
-            return this.af.database.object(`Product/${cart.productId}`)
-              .map(product => ({ cart, product }))
-          })
-          .scan((acc, val) => {
-            acc.qty += val.cart.quantity;
-            acc.total += val.cart.quantity * val.product.price;
-            return acc;
-          }, { qty, total });
-      })
-  }*/
-
-  /*
-      this.db.list(`/materias/` + MateriaID + `/comentarios`)
-        .subscribe((comments) => {
-          console.log(comments);
-          comments.forEach((comentario) => {
-            console.log(comentario);
-            console.log(this.db.object(`/comentarios/${comentario.$value}`))
-          })
-        });
-  */
-
-  /*
-    calcularPromedio(MateriaID: string): Observable<number> {
-      
-      var prom;
-      var total: Observable<number>;
-      var cant = 0;
-      
-      this.db.list(`/materias/` + MateriaID + `/raitings`)
-        .subscribe(raitings => {
-          raitings.forEach(raiting => {
-            total = total + raiting.$value;
-            cant = cant+1;
-          })
-        });
-        
-        total = this.db.list(`/materias/` + MateriaID + `/raitings`).count();
-        
-        this.db.list('/materias/' + MateriaID + '/raitings')
-  
-  
-        ref => ref.orderByChild('size').equalTo('large'))
-        .subscribe(raitings => {
-          var total: Number = 0.0
-          raitings.forEach(raiting => {
-            let snap = raiting;
-            let val = snap.value;
-            total += val
-          })
-          snapshot.forEach(function(voteSnapshot) {
-            total += voteSnapshot.val().vote;
-        });
-        });
-  
-  */
-  /*
-        let placesRef = this.db.database.ref.
-        child("akapnapp")
-        
-        placesRef.observeSingleEvent(of: .value, with: { snapshot in
-        
-            for child in snapshot.children {
-        
-                let placeSnap = child as! FIRDataSnapshot
-                let ratingsSnap = placeSnap.childSnapshot(forPath: "rating")
-        
-                let count = ratingsSnap.childrenCount
-                var total: Double = 0.0
-                for child in ratingsSnap.children {
-                    print(child)
-                    let snap = child as! FIRDataSnapshot
-                    let val = snap.value as! Double
-                    total += val
-                }
-                let average = total/Double(count)
-                print(average)
-            }
-        })
-  
-  
-  
-  
-        console.log(total);
-        console.log(cant);
-      
-        return (total);
-  
-    }
-  */
-
-
 
 }
