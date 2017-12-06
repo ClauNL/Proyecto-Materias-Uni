@@ -63,6 +63,7 @@ export class FirebaseService {
     referencia.update({ numRatings: materia.ratings.numRatings + 1 });
     referencia.update({ ratingAcumulado: materia.ratings.ratingAcumulado + comentarioData.rating });
 
+    //calcular nuevo rating promedio
     this.db.object('/materias/' + materiaId + '/ratingPromedio').set(this.promedio(materiaId));
 
   }
