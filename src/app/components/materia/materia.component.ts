@@ -46,16 +46,15 @@ export class MateriaComponent implements OnInit {
        console.log(comentarios);
      })
   }
-/*
-  calcularPromedio(): number {
-    console.log(this.db.calcularPromedio(this.route.snapshot.paramMap.get('id')));
-    return this.db.calcularPromedio(this.route.snapshot.paramMap.get('id'));
+
+  calcularPromedio(): void {
+      this.db.promedio(this.route.snapshot.paramMap.get('id'));
   }
   
   prueba(): void {
     this.calcularPromedio();
   }
-  */
+  /**/
 
   agregar(): void {
     this.nuevoComentario = true;

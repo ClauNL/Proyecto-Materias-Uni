@@ -60,18 +60,31 @@ export class FirebaseService {
     this.db.object('/materias/' + materiaId + '/comentarios/'+ newKey2 ).set(newKey);  //update comentarios en materia
 
     var materia;
-    this.getInfoMateria(materiaId).subscribe(mat => {
-      materia = mat;
-    });
+    this.getInfoMateria(materiaId).subscribe(mat => { materia = mat });
 
     //actualizar ratigs acumulados y total de ratings
     const referencia = this.db.object('/materias/' + materiaId + '/ratings');
     referencia.update({ numRatings: materia.ratings.numRatings + 1 });
     referencia.update({ ratingAcumulado: materia.ratings.ratingAcumulado + comentarioData.rating });
 
+    this.db.object('/materias/' + materiaId + '/ratingPromedio' ).set(this.promedio(materiaId));
+
   }
 
-
+  promedio(MateriaID: string): number {
+    var ref = firebase.database().ref().child('/materias').child(MateriaID);
+    var numRatings;
+    var ratingAcumulado;
+    var promedio;
+    ref.child('/ratings').on('value',
+      function (ratingsSnapshot) {
+        var ratingsData = ratingsSnapshot.val();
+        numRatings = ratingsData.numRatings;
+        ratingAcumulado = ratingsData.ratingAcumulado;
+        promedio = ratingAcumulado / numRatings;
+      });
+      return Math.round(promedio * 100) / 100;
+  }
 
   getComentariosPorMateria(MateriaID: string): Observable<Comentario[]> {
 
@@ -101,19 +114,7 @@ export class FirebaseService {
     })
   }
 
-  promedio(MateriaID: string) {
-    var ref = firebase.database().ref().child('/materias').child(MateriaID);
-    var numRatings;
-    var ratingAcumulado;
-    var promedio;
-    ref.child('/ratings').on('value',
-      function (ratingsSnapshot) {
-        var ratingsData = ratingsSnapshot.val();
-        numRatings = ratingsData.numRatings;
-        ratingAcumulado = ratingsData.ratingAcumulado;
-        promedio = ratingAcumulado / numRatings;
-      });
-  }
+  
 
   /*cartTotals(qty = 0, total = 0) {
     return this.af.database.list('ShoppingCartItem')
