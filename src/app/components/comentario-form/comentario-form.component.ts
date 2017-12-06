@@ -21,14 +21,14 @@ export class ComentarioFormComponent  {
     private route: ActivatedRoute,
     private location: Location) { }
 
-    ratings = ['1','2','3','4','5'];
-    model = new Comentario('', 4, '', '', '');
+    ratings = [1,2,3,4,5];
+    model = new Comentario();
     submitted = false;
 
 
     onSubmit() { 
       this.submitted = true;
-      this.db.comentar(this.model.rating, this.model.texto, this.route.snapshot.paramMap.get('id'));
+      this.db.comentar(Number(this.model.rating), this.model.texto, this.route.snapshot.paramMap.get('id'));
      }
 
 }

@@ -29,11 +29,12 @@ export class Comentario {
 
   constructor(
     public $key?: string,
+    public fecha?: number,
     public rating?: number,
     public texto?: string,
     public userId?: string,
     public userName?: string,
-    public fecha?: string,
+    
   ) {}
 }
 

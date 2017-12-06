@@ -10,7 +10,7 @@ import { Comentario } from "../components/comentario/comentario.component";
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import {OrderByPipe} from "../orderByPipe"
+import { OrderByPipe } from "../orderByPipe"
 import * as firebase from 'firebase';
 
 
@@ -21,7 +21,7 @@ export class FirebaseService {
   userName: string;
 
   constructor(
-    private db: AngularFireDatabase, 
+    private db: AngularFireDatabase,
     private afAuth: AngularFireAuth,
     private router: Router,
     private route: ActivatedRoute) {
@@ -52,17 +52,22 @@ export class FirebaseService {
       userName: this.userName,
       fecha: firebase.database.ServerValue.TIMESTAMP
     };
-    
-    var newKey = firebase.database().ref().child('comentarios').push().key;
-    var newKey2 = firebase.database().ref().child('/materias/' + materiaId + '/comentarios').push().key;
-    var newKey3 = firebase.database().ref().child('/materias/' + materiaId + '/ratings').push().key;
 
-    var updates = {};
-    updates['/comentarios/' + newKey] = comentarioData;
-    updates['/materias/' + materiaId + '/comentarios/' + newKey2] = newKey;
-    updates['/materias/' + materiaId + '/ratings/' + newKey3] = comentarioData.rating;
+    var newKey = firebase.database().ref().child('comentarios').push().key; //clave comentario
+    var newKey2 = firebase.database().ref().child('/materias/' + materiaId + '/comentarios').push().key; //clave comentario en materia
 
-    firebase.database().ref().update(updates);
+    this.db.object('/comentarios/'+ newKey).update(comentarioData);  //update comenatrios
+    this.db.object('/materias/' + materiaId + '/comentarios/'+ newKey2 ).set(newKey);  //update comentarios en materia
+
+    var materia;
+    this.getInfoMateria(materiaId).subscribe(mat => {
+      materia = mat;
+    });
+
+    //actualizar ratigs acumulados y total de ratings
+    const referencia = this.db.object('/materias/' + materiaId + '/ratings');
+    referencia.update({ numRatings: materia.ratings.numRatings + 1 });
+    referencia.update({ ratingAcumulado: materia.ratings.ratingAcumulado + comentarioData.rating });
 
   }
 
@@ -72,8 +77,7 @@ export class FirebaseService {
 
     return this.db.list(`/materias/` + MateriaID + `/comentarios`, {
       query: {
-        orderByChild: 'fecha',
-        limitToLast: 20
+        orderByChild: 'fecha'
       }
     })
       .map((Keys) => Keys
@@ -88,14 +92,44 @@ export class FirebaseService {
 
 
   getComentariosPorUsuario(): Observable<Comentario[]> {
-    
-         return this.db.list(`/comentarios`, {
-           query: {
-             orderByChild: 'userId',
-             equalTo: this.userId
-           }
-         })
+
+    return this.db.list(`/comentarios`, {
+      query: {
+        orderByChild: 'userId',
+        equalTo: this.userId
+      }
+    })
   }
+
+  promedio(MateriaID: string) {
+    var ref = firebase.database().ref().child('/materias').child(MateriaID);
+    var numRatings;
+    var ratingAcumulado;
+    var promedio;
+    ref.child('/ratings').on('value',
+      function (ratingsSnapshot) {
+        var ratingsData = ratingsSnapshot.val();
+        numRatings = ratingsData.numRatings;
+        ratingAcumulado = ratingsData.ratingAcumulado;
+        promedio = ratingAcumulado / numRatings;
+      });
+  }
+
+  /*cartTotals(qty = 0, total = 0) {
+    return this.af.database.list('ShoppingCartItem')
+      .switchMap(items => {
+        return Observable.from(items)
+          .mergeMap(cart => {
+            return this.af.database.object(`Product/${cart.productId}`)
+              .map(product => ({ cart, product }))
+          })
+          .scan((acc, val) => {
+            acc.qty += val.cart.quantity;
+            acc.total += val.cart.quantity * val.product.price;
+            return acc;
+          }, { qty, total });
+      })
+  }*/
 
   /*
       this.db.list(`/materias/` + MateriaID + `/comentarios`)

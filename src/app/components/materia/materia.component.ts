@@ -80,11 +80,14 @@ export class MateriaComponent implements OnInit {
 
 
 export class Materia {
-  carrera: string;
-  foto: string;
-  nombre: string;
-  profesor: string;
-  ratingPromedio: number;
-  comentarios: string[];
-  ratings: number[];
+  carrera?: string;
+  foto?: string;
+  nombre?: string;
+  profesor?: string;
+  ratingPromedio?: number;
+  comentarios?: string[];
+  ratings: {
+    numRatings: number;
+    ratingAcumulado: number
+  }
 }
