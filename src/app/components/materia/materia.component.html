@@ -1,12 +1,14 @@
 <!-- Detalles de la materia -->
 <div *ngIf="materia">
-  <h2>{{materia.nombre | uppercase}} </h2>
+    
+  <h2>  {{materia.nombre | uppercase}} </h2>
   <table class="table table-striped table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <th>Carrera</th>
         <th>Profesor</th>
         <th>Puntos</th>
+        <th>Imagen</th>
       </tr>
     </thead>
     <tbody>
@@ -14,6 +16,7 @@
         <td>{{materia.carrera}}</td>
         <td>{{materia.profesor}}</td>
         <td>{{materia.ratingPromedio}}/5</td>
+        <img src={{materia.foto}} height = "200" width = "200" > 
       </tr>
     </tbody>
   </table>
