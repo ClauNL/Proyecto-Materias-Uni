@@ -47,10 +47,7 @@ export class MateriaComponent implements OnInit {
       console.log(this.profes); 
 
     })
-
-
   }
- 
 
   getComentarios(): void {
      this.db.getComentariosPorMateria(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
@@ -63,11 +60,6 @@ export class MateriaComponent implements OnInit {
   calcularPromedio(): void {
       this.db.promedio(this.route.snapshot.paramMap.get('id'));
   }
-  
-  prueba(): void {
-    this.calcularPromedio();
-  }
-  /**/
 
   agregar(): void {
     this.nuevoComentario = true;
@@ -80,13 +72,6 @@ export class MateriaComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-
-  
-  
-  
-
-
-
 
 }
 
