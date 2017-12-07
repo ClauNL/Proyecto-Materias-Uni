@@ -40,7 +40,7 @@ export class MateriaComponent implements OnInit {
     })
   }
 
-  
+ 
 
   getComentarios(): void {
      this.db.getComentariosPorMateria(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
