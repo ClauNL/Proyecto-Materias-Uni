@@ -19,7 +19,7 @@ export class MateriaComponent implements OnInit {
   @Input() materia: Materia;
   nuevoComentario = false;
   comentarios: Comentario[] = new Array<Comentario>();
-
+  
 
   constructor(private db: FirebaseService, 
     private afAuth: AuthService,
@@ -40,9 +40,18 @@ export class MateriaComponent implements OnInit {
     })
   }
 
+  getComentariosRating(): void {
+    this.db.getComentariosPorMateriaRating(this.route.snapshot.paramMap.get('id')).subscribe(comentarios2 => {
+      console.log(comentarios2);
+      this.comentarios = comentarios2;
+      
+    })
+  }
+
   getComentarios(): void {
      this.db.getComentariosPorMateria(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
-       this.comentarios = comentarios;
+     
+      this.comentarios = comentarios;
        console.log(comentarios);
      })
   }
@@ -69,13 +78,14 @@ export class MateriaComponent implements OnInit {
   }
 
   
-
+  
   
 
 
 
 
 }
+
 
 
 export class Materia {
