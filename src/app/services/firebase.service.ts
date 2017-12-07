@@ -3,6 +3,7 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Materia } from "../components/materia/materia.component";
 import { Comentario } from "../components/comentario/comentario.component";
+import { Profesor} from "../components/materia/Profesor";
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -81,6 +82,10 @@ export class FirebaseService {
         promedio = ratingAcumulado / numRatings;
       });
     return Math.round(promedio * 100) / 100;
+  }
+
+  profesores(MateriaID: string): Observable<Profesor[]> {
+    return this.db.list(`/materias/` + MateriaID + `/Profesores`); 
   }
 
   getComentariosPorMateria(MateriaID: string): Observable<Comentario[]> {

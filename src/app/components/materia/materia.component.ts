@@ -6,8 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ComentarioComponent, Comentario } from "../comentario/comentario.component";
 import { ComentarioFormComponent } from "../comentario-form/comentario-form.component";
-import {OrderByPipe} from "../../orderByPipe"
-
+import {OrderByPipe} from "../../orderByPipe"; 
+import {Profesor} from "../materia/Profesor"; 
 
 @Component({
   selector: 'app-materia',
@@ -19,27 +19,37 @@ export class MateriaComponent implements OnInit {
   @Input() materia: Materia;
   nuevoComentario = false;
   comentarios: Comentario[] = new Array<Comentario>();
-  
+  profes: Profesor[] = new Array<Profesor>(); 
 
   constructor(private db: FirebaseService, 
     private afAuth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location) { }
-
+   
   ngOnInit() {
     this.getInfoMateria();
     this.getComentarios();
+    this.getProfesores(); 
   }
 
 
   getInfoMateria(): void {
     this.db.getInfoMateria(this.route.snapshot.paramMap.get('id')).subscribe(materia => {
       this.materia = materia;
-      console.log(materia)
+      
     })
   }
 
+  getProfesores(): void {
+    this.db.profesores(this.route.snapshot.paramMap.get('id')).subscribe(Profesores => {
+      this.profes = Profesores; 
+      console.log(this.profes); 
+
+    })
+
+
+  }
  
 
   getComentarios(): void {
@@ -86,7 +96,7 @@ export class Materia {
   carrera?: string;
   foto?: string;
   nombre?: string;
-  profesor?: string;
+  Profesores?: Profesor[];
   ratingPromedio?: number;
   comentarios?: string[];
   ratings: {
@@ -94,3 +104,4 @@ export class Materia {
     ratingAcumulado: number
   }
 }
+
