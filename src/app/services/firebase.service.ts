@@ -102,11 +102,17 @@ export class FirebaseService {
 
   getComentariosPorMateriaRating(MateriaID: string): Observable<Comentario[]> {
     
+    
+    
         return this.db.list(`/materias/` + MateriaID + `/comentarios`, {
           query: {
             orderByChild: 'rating'
           }
         })
+       
+        
+        
+
           .map((Keys) => Keys
             .map((Key) => {
               return this.db.object(`/comentarios/${Key.$value}`)
@@ -115,6 +121,7 @@ export class FirebaseService {
     
             return Observable.combineLatest(comments);
           });
+          
       }
 
   getComentariosPorUsuario(): Observable<Comentario[]> {

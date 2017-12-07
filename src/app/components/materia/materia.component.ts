@@ -40,13 +40,7 @@ export class MateriaComponent implements OnInit {
     })
   }
 
-  getComentariosRating(): void {
-    this.db.getComentariosPorMateriaRating(this.route.snapshot.paramMap.get('id')).subscribe(comentarios2 => {
-      console.log(comentarios2);
-      this.comentarios = comentarios2;
-      
-    })
-  }
+  
 
   getComentarios(): void {
      this.db.getComentariosPorMateria(this.route.snapshot.paramMap.get('id')).subscribe(comentarios => {
